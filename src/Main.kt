@@ -1,14 +1,26 @@
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 fun main() {
-    val name = "Kotlin"
-    //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-    // to see how IntelliJ IDEA suggests fixing it.
-    println("Hello, " + name + "!")
+    print("Introduce la primera palabra: ")
+    val palabra1 = readLine()!!.toLowerCase().trim()
 
-    for (i in 1..5) {
-        //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-        // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-        println("i = $i")
+    print("Introduce la segunda palabra: ")
+    val palabra2 = readLine()!!.toLowerCase().trim()
+
+    if (sonAnagramas(palabra1, palabra2)) {
+        println("Las palabras '$palabra1' y '$palabra2' son anagramas.")
+    } else {
+        println("Las palabras '$palabra1' y '$palabra2' no son anagramas.")
     }
+}
+
+fun sonAnagramas(palabra1: String, palabra2: String): Boolean {
+    if (palabra1.length != palabra2.length) {
+        return false
+    }
+
+    val lista1 = palabra1.toList().sorted()
+    val lista2 = palabra2.toList().sorted()
+
+    return lista1 == lista2
 }

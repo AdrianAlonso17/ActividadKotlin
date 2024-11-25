@@ -2,10 +2,10 @@
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 fun main() {
     print("Introduce la primera palabra: ")
-    val palabra1 = readLine()!!.toLowerCase().trim()
+    val palabra1 = readLine()!!
 
     print("Introduce la segunda palabra: ")
-    val palabra2 = readLine()!!.toLowerCase().trim()
+    val palabra2 = readLine()!!
 
     if (sonAnagramas(palabra1, palabra2)) {
         println("Las palabras '$palabra1' y '$palabra2' son anagramas.")

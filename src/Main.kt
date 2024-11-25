@@ -21,7 +21,7 @@ fun comprobarExpresion(cadena: String) {
                 if (mapa.isEmpty()) {
                     balanceada=false
                 } else {
-                    val ultimo = mapa.removeAt(mapa.size - 1)
+                    val ultimo=mapa.removeAt(mapa.size - 1)
 
                     if ((i == '}' && ultimo != '{') ||
                         (i == ']' && ultimo != '[') ||

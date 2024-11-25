@@ -1,26 +1,35 @@
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 fun main() {
-    print("Introduce la primera palabra: ")
-    val palabra1 = readLine()!!
-
-    print("Introduce la segunda palabra: ")
-    val palabra2 = readLine()!!
-
-    if (sonAnagramas(palabra1, palabra2)) {
-        println("Las palabras '$palabra1' y '$palabra2' son anagramas.")
-    } else {
-        println("Las palabras '$palabra1' y '$palabra2' no son anagramas.")
-    }
+    comprobarExpresion("{a + b [c] * (2x2)}}}}")
+    comprobarExpresion("{ [ a * ( c + d ) ] - 5 }")
+    comprobarExpresion("{ a * ( c + d ) ] - 5 }")
+    comprobarExpresion("{a^4 + (((ax4)}")
+    comprobarExpresion("{ ] a * ( c + d ) + ( 2 - 3 )[ - 5 }")
+    comprobarExpresion("{{{{{{(}}}}}}")
+    comprobarExpresion("(a")
 }
 
-fun sonAnagramas(palabra1: String, palabra2: String): Boolean {
-    if (palabra1.length != palabra2.length) {
-        return false
+fun comprobarExpresion(cadena: String) {
+    val mapa=mutableListOf<Char>()
+    var balanceada=true
+
+    for (i in cadena) {
+        when (i) {
+            '{', '[', '(' -> mapa.add(i)
+            '}', ']', ')' -> {
+                if (mapa.isEmpty()) {
+                    balanceada=false
+                } else {
+                    val ultimo = mapa.removeAt(mapa.size - 1)
+
+                    if ((i == '}' && ultimo != '{') ||
+                        (i == ']' && ultimo != '[') ||
+                        (i == ')' && ultimo != '(')
+                    ) {
+                        balanceada=false
+                    }
+                }
+            }
     }
-
-    val lista1 = palabra1.toList().sorted()
-    val lista2 = palabra2.toList().sorted()
-
-    return lista1 == lista2
 }

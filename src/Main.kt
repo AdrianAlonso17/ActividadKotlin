@@ -11,25 +11,32 @@ fun main() {
 }
 
 fun comprobarExpresion(cadena: String) {
-    val mapa=mutableListOf<Char>()
-    var balanceada=true
+    val mapa = mutableListOf<Char>()
+    var balanceada = true
 
     for (i in cadena) {
         when (i) {
             '{', '[', '(' -> mapa.add(i)
             '}', ']', ')' -> {
                 if (mapa.isEmpty()) {
-                    balanceada=false
+                    balanceada = false
                 } else {
-                    val ultimo=mapa.removeAt(mapa.size - 1)
-
+                    val ultimo = mapa.removeAt(mapa.size - 1)
                     if ((i == '}' && ultimo != '{') ||
                         (i == ']' && ultimo != '[') ||
                         (i == ')' && ultimo != '(')
                     ) {
-                        balanceada=false
+                        balanceada = false
                     }
                 }
             }
+        }
     }
+    if (mapa.isNotEmpty()) {
+        balanceada = false
+    }
+    if(balanceada){
+        println("$cadena ¿esta balanceada? true")
+    }else println("$cadena ¿esta balanceada? false")
 }
+

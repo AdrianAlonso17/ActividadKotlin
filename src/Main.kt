@@ -1,42 +1,45 @@
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 fun main() {
-    comprobarExpresion("{a + b [c] * (2x2)}}}}")
-    comprobarExpresion("{ [ a * ( c + d ) ] - 5 }")
-    comprobarExpresion("{ a * ( c + d ) ] - 5 }")
-    comprobarExpresion("{a^4 + (((ax4)}")
-    comprobarExpresion("{ ] a * ( c + d ) + ( 2 - 3 )[ - 5 }")
-    comprobarExpresion("{{{{{{(}}}}}}")
-    comprobarExpresion("(a")
+    val casosDePrueba = listOf(
+        Pair(arrayOf("correr", "saltar", "correr", "saltar", "correr"), "_|_|_"),
+        Pair(arrayOf("correr", "correr", "correr", "saltar", "correr"), "_|_|_"),
+        Pair(arrayOf("correr", "correr", "saltar", "saltar", "correr"), "_|_|_"),
+        Pair(arrayOf("correr", "correr", "saltar", "saltar", "correr"), "_|_|_|_"),
+        Pair(arrayOf("correr", "saltar", "correr", "saltar"), "_|_|_"),
+        Pair(arrayOf("correr", "saltar", "correr", "saltar", "correr", "saltar", "correr"), "_|_|_"),
+        Pair(arrayOf("saltar", "saltar", "saltar", "saltar", "saltar"), "|||||"),
+        Pair(arrayOf("saltar", "saltar", "saltar", "saltar", "saltar"), "||_||")
+    )
+
+    for (i in casosDePrueba) {
+        val resultado = evaluarCarrera(i.first, i.second)
+        println("$resultado")
+    }
 }
 
-fun comprobarExpresion(cadena: String) {
-    val mapa = mutableListOf<Char>()
-    var balanceada = true
+fun evaluarCarrera(acciones: Array<String>, pista: String): String {
+    val pistaMutable = pista.toMutableList()
 
-    for (i in cadena) {
-        when (i) {
-            '{', '[', '(' -> mapa.add(i)
-            '}', ']', ')' -> {
-                if (mapa.isEmpty()) {
-                    balanceada = false
-                } else {
-                    val ultimo = mapa.removeAt(mapa.size - 1)
-                    if ((i == '}' && ultimo != '{') ||
-                        (i == ']' && ultimo != '[') ||
-                        (i == ')' && ultimo != '(')
-                    ) {
-                        balanceada = false
-                    }
-                }
-            }
+    for (i in acciones.indices) {
+        if (i >= pistaMutable.size) break
+
+        val accion = acciones[i]
+
+        when {
+            accion == "correr" && pistaMutable[i] == '_' -> pistaMutable[i] = '_'
+            accion == "saltar" && pistaMutable[i] == '|' -> pistaMutable[i] = '|'
+            accion == "saltar" && pistaMutable[i] == '_' -> pistaMutable[i] = 'x'
+            accion == "correr" && pistaMutable[i] == '|' -> pistaMutable[i] = '/'
+            else -> pistaMutable[i] = '?'
         }
     }
-    if (mapa.isNotEmpty()) {
-        balanceada = false
-    }
-    if(balanceada){
-        println("$cadena ¿esta balanceada? true")
-    }else println("$cadena ¿esta balanceada? false")
+
+    return pistaMutable.joinToString("")
 }
+
+
+
+
+
 

@@ -14,28 +14,41 @@ fun main() {
 
     for (i in casosDePrueba) {
         val resultado = evaluarCarrera(i.first, i.second)
-        println("$resultado")
+        println("${resultado.first} ${resultado.second}")
     }
 }
 
-fun evaluarCarrera(acciones: Array<String>, pista: String): String {
+fun evaluarCarrera(acciones: Array<String>, pista: String): Pair<String, Boolean> {
     val pistaMutable = pista.toMutableList()
+    var carreraSuperada = true
 
-    for (i in acciones.indices) {
-        if (i >= pistaMutable.size) break
-
-        val accion = acciones[i]
-
-        when {
-            accion == "correr" && pistaMutable[i] == '_' -> pistaMutable[i] = '_'
-            accion == "saltar" && pistaMutable[i] == '|' -> pistaMutable[i] = '|'
-            accion == "saltar" && pistaMutable[i] == '_' -> pistaMutable[i] = 'x'
-            accion == "correr" && pistaMutable[i] == '|' -> pistaMutable[i] = '/'
-            else -> pistaMutable[i] = '?'
+    for (i in pistaMutable.indices) {
+        if (i >= acciones.size) {
+            pistaMutable[i] = '?'
+            carreraSuperada = false
+        } else {
+            val accion = acciones[i]
+            when {
+                accion == "correr" && pistaMutable[i] == '_' -> pistaMutable[i] = '_'
+                accion == "saltar" && pistaMutable[i] == '|' -> pistaMutable[i] = '|'
+                accion == "saltar" && pistaMutable[i] == '_' -> {
+                    pistaMutable[i] = 'x'
+                    carreraSuperada = false
+                }
+                accion == "correr" && pistaMutable[i] == '|' -> {
+                    pistaMutable[i] = '/'
+                    carreraSuperada = false
+                }
+                else -> {
+                    pistaMutable[i] = '?'
+                    carreraSuperada = false
+                }
+            }
         }
     }
 
-    return pistaMutable.joinToString("")
+    return Pair(pistaMutable.joinToString(""), carreraSuperada)
+
 }
 
 

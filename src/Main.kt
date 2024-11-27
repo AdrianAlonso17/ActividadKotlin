@@ -1,58 +1,77 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 fun main() {
-    val casosDePrueba = listOf(
-        Pair(arrayOf("correr", "saltar", "correr", "saltar", "correr"), "_|_|_"),
-        Pair(arrayOf("correr", "correr", "correr", "saltar", "correr"), "_|_|_"),
-        Pair(arrayOf("correr", "correr", "saltar", "saltar", "correr"), "_|_|_"),
-        Pair(arrayOf("correr", "correr", "saltar", "saltar", "correr"), "_|_|_|_"),
-        Pair(arrayOf("correr", "saltar", "correr", "saltar"), "_|_|_"),
-        Pair(arrayOf("correr", "saltar", "correr", "saltar", "correr", "saltar", "correr"), "_|_|_"),
-        Pair(arrayOf("saltar", "saltar", "saltar", "saltar", "saltar"), "|||||"),
-        Pair(arrayOf("saltar", "saltar", "saltar", "saltar", "saltar"), "||_||")
+    val matriz1 = arrayOf(
+        arrayOf("X", "O", "X"),
+        arrayOf("O", "X", "O"),
+        arrayOf("O", "O", "X")
     )
 
-    for (i in casosDePrueba) {
-        val resultado = evaluarCarrera(i.first, i.second)
-        println("${resultado.first} ${resultado.second}")
-    }
+    val matriz2 = arrayOf(
+        arrayOf("", "O", "X"),
+        arrayOf("", "X", "O"),
+        arrayOf("", "O", "X")
+    )
+
+    val matriz3 = arrayOf(
+        arrayOf("O", "O", "O"),
+        arrayOf("O", "X", "X"),
+        arrayOf("O", "X", "X")
+    )
+
+    val matriz4 = arrayOf(
+        arrayOf("X", "O", "X"),
+        arrayOf("X", "X", "O"),
+        arrayOf("X", "X", "X")
+    )
+
+    println(analizarMatriz(matriz1))  // X
+    println(analizarMatriz(matriz2))  // Empate
+    println(analizarMatriz(matriz3))  // O
+    println(analizarMatriz(matriz4))  // Null
 }
 
-fun evaluarCarrera(acciones: Array<String>, pista: String): Pair<String, Boolean> {
-    val pistaMutable = pista.toMutableList()
-    var carreraSuperada = true
+fun analizarMatriz(matriz: Array<Array<String>>): String {
+    val filas = matriz.size
+    val columnas = matriz[0].size
+    var xGana = false
+    var oGana = false
+    var cuentaX = 0
+    var cuentaO = 0
+    var vacios = 0
 
-    for (i in pistaMutable.indices) {
-        if (i >= acciones.size) {
-            pistaMutable[i] = '?'
-            carreraSuperada = false
-        } else {
-            val accion = acciones[i]
-            when {
-                accion == "correr" && pistaMutable[i] == '_' -> pistaMutable[i] = '_'
-                accion == "saltar" && pistaMutable[i] == '|' -> pistaMutable[i] = '|'
-                accion == "saltar" && pistaMutable[i] == '_' -> {
-                    pistaMutable[i] = 'x'
-                    carreraSuperada = false
-                }
-                accion == "correr" && pistaMutable[i] == '|' -> {
-                    pistaMutable[i] = '/'
-                    carreraSuperada = false
-                }
-                else -> {
-                    pistaMutable[i] = '?'
-                    carreraSuperada = false
-                }
+    for (i in 0 until filas) {
+        for (j in 0 until columnas) {
+            when (matriz[i][j]) {
+                "X" -> cuentaX++
+                "O" -> cuentaO++
+                "" -> vacios++
             }
         }
     }
 
-    return Pair(pistaMutable.joinToString(""), carreraSuperada)
+    for (i in 0 until filas) {
+        if (matriz[i].all { it == "X" }) xGana = true
+        if (matriz[i].all { it == "O" }) oGana = true
+    }
 
+    for (j in 0 until columnas) {
+        if (matriz.all { it[j] == "X" }) xGana = true
+        if (matriz.all { it[j] == "O" }) oGana = true
+    }
+
+    if ((matriz[0][0] == "X" && matriz[1][1] == "X" && matriz[2][2] == "X") ||
+        (matriz[0][2] == "X" && matriz[1][1] == "X" && matriz[2][0] == "X")) xGana = true
+    if ((matriz[0][0] == "O" && matriz[1][1] == "O" && matriz[2][2] == "O") ||
+        (matriz[0][2] == "O" && matriz[1][1] == "O" && matriz[2][0] == "O")) oGana = true
+
+    if (xGana && oGana) return "Nulo"
+    if (xGana) return "X"
+    if (oGana) return "O"
+
+    if (cuentaX + cuentaO == filas * columnas) return "Empate"
+
+    if (cuentaX != cuentaO && cuentaX != (cuentaO + 1)) {
+        return "Nulo"
+    }
+
+    return "Empate"
 }
-
-
-
-
-
-

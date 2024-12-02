@@ -4,7 +4,7 @@ class Agenda(private val maxContactos: Int = 10) {
     // Añadir un contacto
     fun agregarContacto(contacto: Contacto) {
         if (contactos.size >= maxContactos) {
-          println("La agenda esta llena no se pueden meter mas contactos")
+          println("La agenda esta llena no se pueden meter mas contactos ")
             //Convierto los nombres a minusculas para comprobar si es el mismo nombre
         } else if (contactos.any { it.nombre.toLowerCase() == contacto.nombre.toLowerCase() }) {
             println("El contacto con ese nombre ya existe")

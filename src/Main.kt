@@ -53,7 +53,7 @@ fun main() {
 fun mostrarMenu() {
     println("1. Añadir contactos")
     println("2. Listar contactos")
-    println("3. Buscar un contacto")
+    println("3. Buscar un contacto ")
     println("4. Existe contacto")
     println("5. Eliminar un contacto")
     println("6. Contactos disponibles")

@@ -1,77 +1,64 @@
 fun main() {
-    val matriz1 = arrayOf(
-        arrayOf("X", "O", "X"),
-        arrayOf("O", "X", "O"),
-        arrayOf("O", "O", "X")
-    )
+    val sistema = Agenda()
 
-    val matriz2 = arrayOf(
-        arrayOf("", "O", "X"),
-        arrayOf("", "X", "O"),
-        arrayOf("", "O", "X")
-    )
-
-    val matriz3 = arrayOf(
-        arrayOf("O", "O", "O"),
-        arrayOf("O", "X", "X"),
-        arrayOf("O", "X", "X")
-    )
-
-    val matriz4 = arrayOf(
-        arrayOf("X", "O", "X"),
-        arrayOf("X", "X", "O"),
-        arrayOf("X", "X", "X")
-    )
-
-    println(analizarMatriz(matriz1))  // X
-    println(analizarMatriz(matriz2))  // Empate
-    println(analizarMatriz(matriz3))  // O
-    println(analizarMatriz(matriz4))  // Null
-}
-
-fun analizarMatriz(matriz: Array<Array<String>>): String {
-    val filas = matriz.size
-    val columnas = matriz[0].size
-    var xGana = false
-    var oGana = false
-    var cuentaX = 0
-    var cuentaO = 0
-    var vacios = 0
-
-    for (i in 0 until filas) {
-        for (j in 0 until columnas) {
-            when (matriz[i][j]) {
-                "X" -> cuentaX++
-                "O" -> cuentaO++
-                "" -> vacios++
+    while (true) {
+        mostrarMenu()
+        println("Escribe una de las opciones")
+        val num= readln()
+        when (num.toInt()) {
+            1 -> {
+                println("Escribe el nombre del contacto:")
+                val nombre = readLine()!!
+                println("Escribe el telefono del contacto:")
+                val telefono = readLine()!!
+                val contacto = Contacto(nombre, telefono)
+                sistema.agregarContacto(contacto)
             }
+            2 -> sistema.listarContactos()
+            3 -> {
+                println("Escribe un nombre")
+                val nombre = readLine()!!
+                sistema.buscarContacto(nombre)
+            }
+            4 -> {
+                println("Escribe un nombre")
+                val nombre = readLine()!!
+                if (sistema.comprobarContacto(nombre)) {
+                    println("El contacto existe")
+                } else {
+                    println("El contacto no existe")
+                }
+            }
+            5 -> {
+                println("Escribe el nombre de contacto a eliminar")
+                val nombre = readLine()!!
+                sistema.eliminarContacto(nombre)
+            }
+            6 -> sistema.huecos()
+            7 -> {
+                if (sistema.estaLlena()) {
+                    println("La agenda esta llena")
+                } else {
+                    println("Aun se pueden meter contactos")
+                }
+            }
+            8 -> {
+                break
+            }
+            else -> println("Seleccione una opcion valida")
         }
     }
-
-    for (i in 0 until filas) {
-        if (matriz[i].all { it == "X" }) xGana = true
-        if (matriz[i].all { it == "O" }) oGana = true
-    }
-
-    for (j in 0 until columnas) {
-        if (matriz.all { it[j] == "X" }) xGana = true
-        if (matriz.all { it[j] == "O" }) oGana = true
-    }
-
-    if ((matriz[0][0] == "X" && matriz[1][1] == "X" && matriz[2][2] == "X") ||
-        (matriz[0][2] == "X" && matriz[1][1] == "X" && matriz[2][0] == "X")) xGana = true
-    if ((matriz[0][0] == "O" && matriz[1][1] == "O" && matriz[2][2] == "O") ||
-        (matriz[0][2] == "O" && matriz[1][1] == "O" && matriz[2][0] == "O")) oGana = true
-
-    if (xGana && oGana) return "Nulo"
-    if (xGana) return "X"
-    if (oGana) return "O"
-
-    if (cuentaX + cuentaO == filas * columnas) return "Empate"
-
-    if (cuentaX != cuentaO && cuentaX != (cuentaO + 1)) {
-        return "Nulo"
-    }
-
-    return "Empate"
 }
+
+fun mostrarMenu() {
+    println("1. Añadir contactos")
+    println("2. Listar contactos")
+    println("3. Buscar un contacto")
+    println("4. Existe contacto")
+    println("5. Eliminar un contacto")
+    println("6. Contactos disponibles")
+    println("7. Agenda llena")
+    println("8. Salir")
+}
+
+
